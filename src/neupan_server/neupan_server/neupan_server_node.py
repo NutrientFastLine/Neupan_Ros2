@@ -10,8 +10,6 @@ from math import sin, cos, atan2
 import numpy as np
 from neupan.util import get_transform
 import tf2_ros
-import tf_transformations
-import sensor_msgs.point_cloud2 as pc2
 from neupan_interfaces.srv import NeupanCommand
 from neupan import neupan
 
@@ -19,6 +17,7 @@ class NeupanSeverNode(Node):
     def __init__(self):
         super().__init__('neupan_server_node')
 
+        print("start")
         # Declare and get parameters
         self.declare_parameter('config_file_path', '')
         self.declare_parameter('map_frame', 'map')
@@ -52,9 +51,10 @@ class NeupanSeverNode(Node):
             self.get_logger().error("No planner config file provided! Please set the parameter 'config_file'")
             raise ValueError("Missing config file")
         # 初始化 neupan 实例
-        pan = {'dune_checkpoint': self.dune_checkpoint}
-        self.neupan_planner = neupan.init_from_yaml(self.planner_config_file, pan=pan)
+        # pan = {'dune_checkpoint': self.dune_checkpoint}
+        # self.neupan_planner = neupan.init_from_yaml(self.planner_config_file, pan=pan)
 
+        print("start1")
         # Data initialization
         self.obstacle_points = None
         self.robot_state = None
@@ -119,6 +119,7 @@ class NeupanSeverNode(Node):
             return response
 
     def run(self):
+        print("111")
         try:
             transform = self.tf_buffer.lookup_transform(
                 self.map_frame,
@@ -189,6 +190,7 @@ class NeupanSeverNode(Node):
                 f"Neupan stopped with min distance {self.neupan_planner.min_distance} "
                 f"threshold {self.neupan_planner.collision_threshold}"
             )
+
     def scan_callback(self, scan_msg: LaserScan):
         if self.robot_state is None:
             return
@@ -240,6 +242,7 @@ class NeupanSeverNode(Node):
             self.get_logger().info(
                 f"Waiting for TF from {self.lidar_frame} to {self.map_frame}..."
             )
+            
     def path_callback(self, path: Path):
         self.get_logger().info("Target path update")
 

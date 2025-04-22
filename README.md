@@ -36,3 +36,5 @@ ros2 pkg create nav2_neupan_controller --build-type ament_cmake --dependencies p
         export PYTHONPATH="$PYTHON_SITE_PACKAGES:$PYTHONPATH"
         export PYTHONPATH=/home/feiyu/NeuPAN:$PYTHONPATH
 
+遇到了matplotlib 冲突问题，NeuPAN环境中和系统自带的版本冲突。
+遇到了numpy版本问题，numpy版本为2.2不适配，删除之后安装numpy 1.23
