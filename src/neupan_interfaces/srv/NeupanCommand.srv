@@ -1,0 +1,8 @@
+# Request
+geometry_msgs/Pose2D pose
+sensor_msgs/LaserScan scan
+---
+# Response
+geometry_msgs/Twist cmd_vel
+bool success
+

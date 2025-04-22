@@ -1,0 +1,9 @@
+<class_libraries>
+    <library path="nav2_neupan_controller_plugin">
+        <class type="nav2_neupan_controller::NeupanController" base_class_type="nav2_core::Controller">
+            <description>
+                neupan导航控制器
+            </description>
+        </class>
+    </library>
+</class_libraries>

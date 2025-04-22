@@ -1,0 +1,7 @@
+# Distribution / packaging
+build/
+install/
+log/
+src/.vscode/
+.vscode/
+
