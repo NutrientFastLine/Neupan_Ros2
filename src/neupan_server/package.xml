@@ -11,8 +11,18 @@
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>neupan_interfaces</exec_depend>
-  
+
+  <depend>nav_msgs</depend>
+  <depend>visualization_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+
   <depend>neupan</depend>
+  <!-- for numpy-based computation -->
+  <exec_depend>python3-numpy</exec_depend>
+  <!-- for sensor_msgs.point_cloud2 -->
+  <exec_depend>python3-sensor-msgs</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
