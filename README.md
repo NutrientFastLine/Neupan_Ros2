@@ -28,6 +28,10 @@ ros2 pkg create nav2_neupan_controller --build-type ament_cmake --dependencies p
 编写CmakeLists.txt文件
 编写package.xml
 
+遇到如下问题
+[component_container_isolated-1] [ERROR] [1745403788.489409154] [controller_server]: Node '/controller_server' has already been added to an executor.
+原因是在nav2 插件里
+
 # 3.编写python控制器节点
 
 我遇到了conda环境与ros2系统之间的交互问题，表现为找不到conda环境安装的包。
@@ -36,5 +40,5 @@ ros2 pkg create nav2_neupan_controller --build-type ament_cmake --dependencies p
         export PYTHONPATH="$PYTHON_SITE_PACKAGES:$PYTHONPATH"
         export PYTHONPATH=/home/feiyu/NeuPAN:$PYTHONPATH
 
-遇到了matplotlib 冲突问题，NeuPAN环境中和系统自带的版本冲突。
-遇到了numpy版本问题，numpy版本为2.2不适配，删除之后安装numpy 1.23
+遇到了matplotlib 冲突问题，NeuPAN环境中和系统自带的版本冲突,删除环境中的matplotlib
+遇到了numpy版本问题，numpy版本为2.2不适配，在环境中删除之后安装numpy 1.23

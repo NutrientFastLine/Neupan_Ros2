@@ -8,7 +8,8 @@
 #include "nav2_core/controller.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "nav2_util/robot_utils.hpp"
-
+#include "nav2_util/service_client.hpp"
+#include "neupan_interfaces/srv/neupan_command.hpp"
 
 namespace nav2_neupan_controller {
 
@@ -44,6 +45,17 @@ protected:
 //   nav2_costmap_2d::Costmap2D *costmap_;
   // 存储 setPlan 提供的全局路径
   nav_msgs::msg::Path global_plan_;
+
+  //创建服务客户端
+  // rclcpp::Node::SharedPtr raw_node_;
+  // nav2_util::ServiceClient<neupan_interfaces::srv::NeupanCommand> client_;
+  // std::unique_ptr<nav2_util::ServiceClient<neupan_interfaces::srv::NeupanCommand>> client_;
+  // 独立的 Node 和 Service Client
+  rclcpp::Node::SharedPtr raw_node_;
+  rclcpp::Client<neupan_interfaces::srv::NeupanCommand>::SharedPtr client_;
+  rclcpp_lifecycle::LifecyclePublisher<nav_msgs::msg::Path>::SharedPtr path_pub_;
+
+
   // 参数：最大线速度角速度
   double max_angular_speed_;
   double max_linear_speed_;

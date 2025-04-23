@@ -9,6 +9,8 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(nav2_core REQUIRED)
+find_package(neupan_interfaces REQUIRED)
+find_package(nav2_util REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -29,7 +31,7 @@ set(library_name ${PROJECT_NAME}_plugin)
 # 创建共享库
 add_library(${library_name} SHARED src/neupan_controller.cpp)
 # 指定库的依赖关系
-ament_target_dependencies(${library_name} nav2_core pluginlib)
+ament_target_dependencies(${library_name} nav2_core pluginlib neupan_interfaces nav2_util)
 # 安装库文件到指定目录
 install(TARGETS ${library_name}
   ARCHIVE DESTINATION lib

@@ -17,7 +17,7 @@ robot:
 # initial path
 ipath:
   interval: 0.09
-  waypoints: [[0, 0, 0], [5, 0, 0]]
+  waypoints: None
   curve_style: 'line'   # 'dubins' or reeds or line
   min_radius: 0.0
   loop: True

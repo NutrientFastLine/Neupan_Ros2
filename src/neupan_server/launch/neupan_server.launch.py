@@ -1,53 +1,50 @@
-import os
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
-from launch_ros.substitutions import FindPackageShare
-
+import os
+from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
+    neupan_server_dir = get_package_share_directory('neupan_server')
+    config_file_dir = os.path.join(neupan_server_dir, 'config', 'neupan_controller.yaml')
+    weight_file_dir = os.path.join(neupan_server_dir, 'weight', 'model_5000.pth')
+    rviz_file_dir = os.path.join(neupan_server_dir, 'rviz', 'display.rviz')
 
-    package_share_directory = FindPackageShare(package='neupan_server').find('neupan_server')
-    config_file_path = os.path.join(package_share_directory, 'config', 'neupan_controller.yaml')
-    dune_checkpoint = os.path.join(package_share_directory, 'pretrain_limo', 'model_5000.pth')
-    
-    map_frame = LaunchConfiguration('map_frame', default='map')
-    base_frame = LaunchConfiguration('base_frame', default='base_link')
-    lidar_frame = LaunchConfiguration('lidar_frame', default='laser_link')
-    marker_size = LaunchConfiguration('marker_size', default='0.05')
-    marker_z = LaunchConfiguration('marker_z', default='0.3')
-    scan_angle_range = LaunchConfiguration('scan_angle_range', default='-3.14 3.14')
-    scan_downsample = LaunchConfiguration('scan_downsample', default='6')
-    scan_range = LaunchConfiguration('usart_port', default='0.0 5.0')
-    refresh_initial_path = LaunchConfiguration('refresh_initial_path', default='False')
-    flip_angle = LaunchConfiguration('flip_angle', default='False')
+    return LaunchDescription([
+        DeclareLaunchArgument('config_file', default_value=config_file_dir),
+        DeclareLaunchArgument('map_frame', default_value='map'),
+        DeclareLaunchArgument('base_frame', default_value='base_link'),
+        DeclareLaunchArgument('laser_frame', default_value='laser_link'),
+        DeclareLaunchArgument('dune_checkpoint', default_value=weight_file_dir),
 
-    neupan_server_node = Node(
-        package='neupan_server',
-        executable='neupan_server_node',
-        name='neupan_server_node',
-        parameters=[
-            {
-                'config_file_path': config_file_path,
-                'dune_checkpoint': dune_checkpoint,
-                'map_frame': map_frame,
-                'base_frame': base_frame,
-                'lidar_frame' : lidar_frame,
-                'marker_size': marker_size,
-                'marker_z' : marker_z,
-                'scan_angle_range' : scan_angle_range,
-                'scan_downsample': scan_downsample,
-                'scan_range': scan_range,
-                'refresh_initial_path': refresh_initial_path,
-                'flip_angle': flip_angle,
-            }
-        ],
-        output='screen')   
-    
-    #===============================================定义启动文件========================================================
+        Node(
+            package='neupan_server',
+            executable='neupan_server_node',
+            name='neupan_server_node',
+            output='screen',
+            parameters=[{
+                'config_file': LaunchConfiguration('config_file'),
+                'map_frame': LaunchConfiguration('map_frame'),
+                'base_frame': LaunchConfiguration('base_frame'),
+                'laser_frame': LaunchConfiguration('laser_frame'),
+                'scan_range': [0.0, 5.0],                      
+                'scan_angle_range': [-3.14, 3.14],             
+                'marker_size': 0.05,
+                'marker_z': 0.3,
+                'scan_downsample': 6,
+                'dune_checkpoint': LaunchConfiguration('dune_checkpoint'),
+            }],
+            # remappings=[
+            #     ('/neupan_cmd_vel', '/cmd_vel'),
+            # ]
+        ),
 
-    ld = LaunchDescription()
-
-    ld.add_action(neupan_server_node)
-
-    return ld
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            output='screen',
+            arguments=['-d', rviz_file_dir]
+        )
+    ])
